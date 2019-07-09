@@ -1,23 +1,11 @@
 class User < ApplicationRecord
 	has_secure_password
-
 	validates :name, :email, presence: true
-	
 	before_create :create_remember_token
 		
-	def User.new_remember_token
-    	SecureRandom.urlsafe_base64
-  	end
-
-  	def User.encrypt(token)
-    	Digest::SHA1.hexdigest(token.to_s)
-  	end
-
-  	private
-
-    def create_remember_token
-      User.encrypt(User.new_remember_token)
-    end
-
-
+	private
+	def create_remember_token
+		token = SecureRandom.urlsafe_base64 
+		self.remember_token = Digest::SHA1.hexdigest(token)
+	end
 end
