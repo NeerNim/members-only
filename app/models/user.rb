@@ -3,14 +3,21 @@ class User < ApplicationRecord
 
 	validates :name, :email, presence: true
 	
-	before_create :create_user
+	before_create :create_remember_token
 		
-	private 
+	def User.new_remember_token
+    	SecureRandom.urlsafe_base64
+  	end
 
-	def create_user
-		remember_token = SecureRandom.urlsafe_base64.to_s
-		User.create({remember_token: Digest::SHA1.hexdigest("remember_token")})	
-	end
+  	def User.encrypt(token)
+    	Digest::SHA1.hexdigest(token.to_s)
+  	end
+
+  	private
+
+    def create_remember_token
+      User.encrypt(User.new_remember_token)
+    end
 
 
 end
