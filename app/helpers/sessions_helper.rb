@@ -4,11 +4,21 @@ module SessionsHelper
     cookies.permanent[:remember_token] = user.remember_token
     current_user
   end
+
   def current_user
     @current_user ||= User.find_by(remember_token: cookies[:remember_token])  
   end
+
   def logged_in?
     !current_user.nil?
   end
+
+  def log_out
+    cookies.delete(:remember_token)
+    cookies.delete(:user_id)
+    @current_user = nil
+  end
+
+  # helper_method :logged_in?
   
 end
