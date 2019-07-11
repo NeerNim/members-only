@@ -11,12 +11,12 @@
     <% flash.each do |name, msg| -%>
       <%= content_tag :div, msg, class: name %>
     <% end -%>
-    <%= yield %>
     <% if current_user %>
-      Logged in as <%= current_user.email %>.
+      Logged in as <%= current_user.name %>
       <%= link_to "Log Out", logout_path %>
     <% else %>
       <%= link_to "Log In", login_path %>
     <% end %>
+    <%= yield %>
   </body>
 </html>
