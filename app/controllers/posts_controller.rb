@@ -25,7 +25,7 @@ class PostsController < ApplicationController
   # POST /posts
   # POST /posts.json
   def create
-    @post = Post.new(user_id: current_user.id, title: params[:post][:title], content: params[:post][:content])
+    @post = current_user.posts.build(post_params)
     if @post.save
       redirect_to posts_path
     else
