@@ -1,6 +1,6 @@
 class PostsController < ApplicationController
-  before_action :require_login, only: [:create, :new]
   before_action :set_post, only: [:show, :edit, :update, :destroy]
+  skip_before_action :require_login, only: [:index]
 
   # GET /posts
   # GET /posts.json
@@ -25,7 +25,7 @@ class PostsController < ApplicationController
   # POST /posts
   # POST /posts.json
   def create
-    @post = Post.new(user_id: cookies.signed[:user_id], title: params[:post][:title], content: params[:post][:content])
+    @post = Post.new(user_id: current_user.id, title: params[:post][:title], content: params[:post][:content])
     if @post.save
       redirect_to posts_path
     else
@@ -79,8 +79,4 @@ class PostsController < ApplicationController
     def post_params
       params.require(:post).permit(:title, :content, :user_id)
     end
-    def require_login
-      
-    end
-
 end
