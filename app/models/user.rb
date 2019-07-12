@@ -12,9 +12,6 @@ class User < ApplicationRecord
 	before_create :create_remember_token
 	has_many :posts
 
-	def index
-		@user = User.find(sessions[:user_id])
-	end
 
 
 	private
